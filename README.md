@@ -7,6 +7,8 @@
 Se recomienda encarecidamente el uso de virtualenv (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 El proyecto usa python3.
 
+Algunas dependencias del proyecto requieren GIT para ser descargadas. Asegurese de tener GIT instalado en el equipo (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
 En la raíz del proyecto, instalar las dependencias usando:
 
 $ pip install -r requirements.txt
