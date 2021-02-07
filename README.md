@@ -1,5 +1,5 @@
-# catv-segmentacion
-Guía de instalación
+# Segmentación de imágenes
+##Guía de instalación
 
 Se recomienda encarecidamente el uso de virtualenv (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 El proyecto usa python3.
@@ -10,11 +10,11 @@ $ pip install -r requirements.txt
 
 El proyecto tiene compatibilidad con GPU NVidia. En caso de contar con una, se debe intalar el driver CUDA en la máquina (https://www.tensorflow.org/install/gpu?hl=es-419)
 
-Guía de uso
+##Guía de uso
 
 El proyecto tiene 4 funciones:
 
-1.- Entrenamiento
+###1.- Entrenamiento
 
 Para entrenar el segmentador se invoca el archivo entrenar.py usando el interprete de python. El archivo recibe como parámetro la ruta en la que se almacenan los datos de entrenamiento y el número de épocas por las que se quiere entrenar (opcional). El archivo muestra una descripción de los parámetros al invocarlo con la opción -h o --help:
 
@@ -44,7 +44,7 @@ Ejemplo:
 $ python entrenar.py ~/ruta/dataset --epochs 10
 ```
 
-2.- Segmentación
+###2.- Segmentación
 
 Una vez que el modelo ha sido entrenado, se invoca el archivo segmentar.py. El archivo recibe como parámetro la ruta en la que se encuentran las imágenes a segmentar y la ruta en la que se guardará el resultado de la segmentación. El archivo muestra una descripción de los parámetros al invocarlo con la opción -h o --help:
 
@@ -67,7 +67,7 @@ Ejemplo:
 ```
 $ python segmentar.py ~/ruta/imagenes/a/segmentar ~/ruta/resultado/segmentacion
 ```
-3.- Importar/Exportar modelo
+###3.- Importar/Exportar modelo
 
 Para facilitar el entrenamiento en una máquina diferente, el programa permite importar y exportar un modelo que luego se usará para la segmentación. El modelo debe estar en formato h5. 
 Para importar un modelo se invoca el archivo importarModelo.py. El archivo recibe como parámetro la ruta en la que se encuentra el modelo a importar. El archivo muestra una descripción de los parámetros al invocarlo con la opción -h o --help:
