@@ -1,4 +1,7 @@
 # Segmentación de imágenes
+
+![Imagen segmentada](segmentacion.jpg)
+
 ## Guía de instalación
 
 Se recomienda encarecidamente el uso de virtualenv (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
