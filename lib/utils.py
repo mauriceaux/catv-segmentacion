@@ -4,10 +4,28 @@ from tensorflow_examples.models.pix2pix import pix2pix
 import matplotlib.pyplot as plt
 
 class DisplayCallback(tf.keras.callbacks.Callback):
-  def on_epoch_end(self, epoch, logs=None):
-    clear_output(wait=True)
-    show_predictions()
-    print ('\nSample Prediction after epoch {}\n'.format(epoch+1))
+    def __init__(self, dataset):
+        self.dataset = dataset
+        plt.ion()
+        plt.show()
+        self.fig = plt.figure(figsize=(18, 18))
+
+    def display_sample(self, display_list):
+    
+        title = ['Original', 'Segmentada']
+
+        for i in range(len(display_list)):
+            plt.subplot(1, len(display_list), i+1)
+            plt.title(title[i])
+            plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
+            plt.axis('off')
+            self.fig.canvas.draw()
+    
+    def on_epoch_end(self, epoch, logs=None):
+        for image in self.dataset.take(1):
+            one_img_batch = image[tf.newaxis, ...]
+            pred_mask = self.model.predict(one_img_batch)
+            self.display_sample([image, create_mask(pred_mask)])
 
 def create_mask(pred_mask):
   pred_mask = tf.argmax(pred_mask, axis=-1)
@@ -21,7 +39,7 @@ def create_mask_batch(pred_mask):
 
 def display_sample(display_list):
     
-    plt.figure(figsize=(18, 18))
+    fig = plt.figure(figsize=(18, 18))
 
     title = ['Input Image', 'True Mask', 'Predicted Mask']
 
@@ -30,7 +48,8 @@ def display_sample(display_list):
         plt.title(title[i])
         plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
         plt.axis('off')
-    plt.show()
+        fig.canvas.draw()
+    
 
 def show_predictions(dataset=None, model=None, num=1):
     
@@ -129,9 +148,8 @@ def load_image(data, img_width, img_height):
 def loadTrainingDataset(data_dir, img_height, img_width, train_percentage = 0.75):
     data_dir = pathlib.Path(f"{data_dir}images")
     image_count = len(list(data_dir.glob("*.jpg")))
-    SEED = 234
-
-    all_dataset = tf.data.Dataset.list_files(f"{data_dir}/*.jpg", seed=SEED)
+    
+    all_dataset = tf.data.Dataset.list_files(f"{data_dir}/*.jpg")
     all_dataset = all_dataset.map(parse_image)
 
     trainSize = int(image_count*train_percentage)
@@ -140,7 +158,7 @@ def loadTrainingDataset(data_dir, img_height, img_width, train_percentage = 0.75
     train_files = all_dataset.take(trainSize)
     test_files = all_dataset.skip(trainSize) 
 
-    BATCH_SIZE = 4
+    BATCH_SIZE = 2
 
     BUFFER_SIZE = 50
 
@@ -150,10 +168,10 @@ def loadTrainingDataset(data_dir, img_height, img_width, train_percentage = 0.75
 
     test = dataset['test'].map(lambda x:load_image_test(x, img_width, img_height))
 
-    train_dataset = train.cache().shuffle(BUFFER_SIZE).batch(BATCH_SIZE).repeat()
-    train_dataset = train_dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
+    train_dataset = train.repeat().batch(BATCH_SIZE)
+    test_dataset = test.batch(BATCH_SIZE)
    
-    return train_dataset, test, image_count
+    return train_dataset, test_dataset, image_count
 
 def loadImages(dataDir, img_height, img_width):
     data_dir = pathlib.Path(f"{dataDir}")
@@ -169,7 +187,6 @@ def crearModelo(img_width, img_height):
 
     base_model = tf.keras.applications.MobileNetV2(input_shape=[img_height, img_width, 3], include_top=False)
 
-    # Use the activations of these layers
     layer_names = [
         'block_1_expand_relu',   # 64x64
         'block_3_expand_relu',   # 32x32
@@ -179,7 +196,6 @@ def crearModelo(img_width, img_height):
     ]
     layers = [base_model.get_layer(name).output for name in layer_names]
 
-    # Create the feature extraction model
     down_stack = tf.keras.Model(inputs=base_model.input, outputs=layers)
 
     down_stack.trainable = False
