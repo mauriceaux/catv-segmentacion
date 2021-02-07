@@ -23,18 +23,20 @@ Para entrenar el segmentador se invoca el archivo entrenar.py usando el interpre
 
 ```
 $ python entrenar.py -h
-2021-02-06 22:08:34.580633: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-usage: entrenar.py [-h] [--epochs EPOCHS] carpeta_raiz
+2021-02-07 19:12:47.617625: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+usage: entrenar.py [-h] [--epochs EPOCHS] [--display-training] carpeta_raiz
 
 positional arguments:
-  carpeta_raiz     Carpeta raiz donde se encuentran los datos de
-                   entrenamiento. Debe contener una carpeta llamada "images"
-                   con las imagenes jpg a segmentar y una carpeta "labels" con
-                   las imagenes png de ejemplos de segmentación
+  carpeta_raiz        Carpeta raiz donde se encuentran los datos de
+                      entrenamiento. Debe contener una carpeta llamada
+                      "images" con las imagenes jpg a segmentar y una carpeta
+                      "labels" con las imagenes png de ejemplos de
+                      segmentación
 
 optional arguments:
-  -h, --help       show this help message and exit
-  --epochs EPOCHS  Cantidad de epocas a entrenar
+  -h, --help          show this help message and exit
+  --epochs EPOCHS     Cantidad de epocas a entrenar
+  --display-training  Muestra una segmentación al final de cada época.
 ```  
 
 La carpeta raiz donde se encuentran los datos de entrenamiento debe tener 2 subcarpetas, "images" y "labels".
