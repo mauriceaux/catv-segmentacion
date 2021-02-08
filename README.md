@@ -5,7 +5,7 @@
 ## Guía de instalación
 
 Se recomienda encarecidamente el uso de virtualenv (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-El proyecto usa python3.
+IMPORTANTE: El proyecto usa python 3.6.
 
 Algunas dependencias del proyecto requieren GIT para ser descargadas. Asegurese de tener GIT instalado en el equipo (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
